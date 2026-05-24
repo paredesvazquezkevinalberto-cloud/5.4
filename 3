@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Datos
+x = np.array([50, 70, 90, 110, 130])   # Presión (kPa)
+y = np.array([15, 21, 27, 33, 39])     # Caudal (L/min)
+
+# Cálculo de coeficientes
+n = len(x)
+sum_x, sum_y = np.sum(x), np.sum(y)
+sum_xy, sum_x2 = np.sum(x*y), np.sum(x**2)
+
+b = (n*sum_xy - sum_x*sum_y) / (n*sum_x2 - sum_x**2)
+a = (sum_y - b*sum_x) / n
+
+print(f"a (intercepto) = {a:.4f}")
+print(f"b (pendiente) = {b:.4f}")
+
+# Predicción en x=100
+x_eval = 100
+y_eval = a + b*x_eval
+print(f"Caudal estimado en 100 kPa: {y_eval:.2f} L/min")
+
+# Gráfica
+y_pred = a + b*x
+plt.plot(x, y, 'o', label="Datos")
+plt.plot(x, y_pred, '-', color="red", label=f"Ajuste: y = {a:.2f} + {b:.2f}x")
+plt.xlabel("Presión (kPa)")
+plt.ylabel("Caudal (L/min)")
+plt.title("Regresión lineal - Caudal en tuberías")
+plt.legend()
+plt.grid(True)
+plt.show()
